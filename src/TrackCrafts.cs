@@ -64,6 +64,8 @@ public class TrackCrafts : MonoBehaviour
     private static void pinRecipe()
     {
         GameObject currentTooltip = GameObject.Find("HUDCanvas(Clone)/Canvas/HUDMenuParent/WorkstationMenu(Clone)/MenuParent/WorkstationSubMenu(Clone)/MotionRoot/FakeTooltip");
+        if (currentTooltip == null)
+            return;
         createAndAttachFakeToolTip(currentTooltip);
     }
 
