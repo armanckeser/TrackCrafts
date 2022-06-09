@@ -36,20 +36,15 @@ public class TrackCrafts : MonoBehaviour
         }
     }
 
-    [HarmonyPatch(typeof(GridSelectionEntry), nameof(GridSelectionEntry.OnPointerEnter))]
+    [HarmonyPatch(typeof(GridSelectionEntry), nameof(GridSelectionEntry.OnPointerClick))]
     [HarmonyPostfix]
-    static void OnPointerEnter(GridSelectionEntry __instance, PointerEventData eventData)
+    static void OnPointerClick(GridSelectionEntry __instance, PointerEventData eventData)
     {
+        if (layout == null)
+            layout = GameObject.Find("HUDCanvas(Clone)/Canvas/HUDAchievements/JournalParent(Clone)/Layout");
         var entry = __instance.GetComponent<WorkstationRecipeGridSelectionEntry>();
         if (entry == null)
             return;
-        layout = GameObject.Find("HUDCanvas(Clone)/Canvas/HUDAchievements/JournalParent(Clone)/Layout");
-
-    }
-    [HarmonyPatch(typeof(GridSelectionEntry), nameof(GridSelectionEntry.OnPointerClick))]
-    [HarmonyPostfix]
-    static void OnPointerClick(PointerEventData eventData)
-    {
         if (eventData.button == PointerEventData.InputButton.Middle)
         {
             if (tooltip != null)

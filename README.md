@@ -26,6 +26,9 @@ This is my first plugin, as well as my first time touching any game engine. If y
 
 `0.0.2` Update Readme
 
+`0.0.3` Fix bug where middle clicking on non recipes would pin recipe
+
 ### Credits
 arwen - README
+
 Elmegaard - build script
