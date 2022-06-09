@@ -4,7 +4,7 @@
 
 ### Description
 
-Click on a recipe to track it. Press F1 to clear it.
+Middle Click on a recipe to track it. Press F1 to clear it.
 Note: Currently not auto updating
 
 ### Features
