@@ -24,4 +24,8 @@ This is my first plugin, as well as my first time touching any game engine. If y
 ### Changelog
 `0.0.1` First release
 
-`0.0.2` Readme update
+`0.0.2` Update Readme
+
+### Credits
+arwen - README
+Elmegaard - build script
