@@ -26,5 +26,13 @@ public class Plugin : BasePlugin
         _harmony.PatchAll(Assembly.GetExecutingAssembly());
         Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
+    public override bool Unload()
+    {
+        Logger = Log;
+        TrackCrafts.Reset();
+        _harmony.UnpatchSelf();
+        Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is unloaded!");
+        return true;
+    }
 
 }

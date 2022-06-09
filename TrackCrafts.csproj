@@ -24,7 +24,7 @@
     <Reference Include="Il2CppSystem">
         <HintPath>$(UnhollowedDllPath)\Il2CppSystem.dll</HintPath>
     </Reference>
-    
+
     <Reference Include="ProjectM.Shared">
         <HintPath>$(UnhollowedDllPath)\ProjectM.Shared.dll</HintPath>
     </Reference>
@@ -33,12 +33,28 @@
         <HintPath>$(UnhollowedDllPath)\ProjectM.dll</HintPath>
     </Reference>
 
+    <Reference Include="Unity.TextMeshPro">
+        <HintPath>$(UnhollowedDllPath)\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+
     <Reference Include="Unity.Collections">
         <HintPath>$(UnhollowedDllPath)\Unity.Collections.dll</HintPath>
     </Reference>
 
     <Reference Include="Unity.Entities">
         <HintPath>$(UnhollowedDllPath)\Unity.Entities.dll</HintPath>
+    </Reference>
+
+    <Reference Include="UnityEngine.UI">
+        <HintPath>$(UnhollowedDllPath)\UnityEngine.UI.dll</HintPath>
+    </Reference>
+
+    <Reference Include="UnityEngine.PhysicsModule">
+        <HintPath>$(UnhollowedDllPath)\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+
+    <Reference Include="ProjectM.HUD">
+        <HintPath>$(UnhollowedDllPath)\ProjectM.HUD.dll</HintPath>
     </Reference>
 
     <Reference Include="Unity.Entities.Hybrid">

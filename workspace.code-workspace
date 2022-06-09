@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\cpp2il\\cpp2il_out\\types"
+		}
+	],
+	"settings": {}
+}
