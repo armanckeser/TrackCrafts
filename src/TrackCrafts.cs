@@ -1,15 +1,40 @@
 using HarmonyLib;
-using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using Wetstone.API;
 
 namespace TrackCrafts;
 
 [HarmonyPatch]
 public class TrackCrafts : MonoBehaviour
 {
-    private static GameObject tooltip = null;
-    private static GameObject layout = null;
+    public static TrackCrafts Instance;
+    private static GameObject tooltip;
+    private static GameObject layout;
+    private Keybinding ClearPinnedKeybind;
+
+    private void Awake()
+    {
+        Instance = this;
+
+        ClearPinnedKeybind = KeybindManager.Register(new KeybindingDescription
+        {
+            Id = "TrackCrafts",
+            Category = "Track Crafting Recipes",
+            Name = "Clear pinned recipe",
+            DefaultKeybinding = KeyCode.F1
+        });
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(ClearPinnedKeybind.Primary) || Input.GetKeyDown(ClearPinnedKeybind.Secondary))
+        {
+            UnityEngine.Object.Destroy(tooltip);
+            tooltip = null;
+        }
+    }
 
     [HarmonyPatch(typeof(GridSelectionEntry), nameof(GridSelectionEntry.OnPointerEnter))]
     [HarmonyPostfix]

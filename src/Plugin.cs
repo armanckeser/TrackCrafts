@@ -3,7 +3,10 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using BepInEx.Logging;
+using UnhollowerRuntimeLib;
 using HarmonyLib;
+using Object = UnityEngine.Object;
+
 
 namespace TrackCrafts;
 
@@ -25,11 +28,14 @@ public class Plugin : BasePlugin
         _harmony = new Harmony(PluginInfo.PLUGIN_GUID);
         _harmony.PatchAll(Assembly.GetExecutingAssembly());
         Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+        ClassInjector.RegisterTypeInIl2Cpp<TrackCrafts>();
+        AddComponent<TrackCrafts>();
     }
     public override bool Unload()
     {
         Logger = Log;
         TrackCrafts.Reset();
+        Object.Destroy(TrackCrafts.Instance);
         _harmony.UnpatchSelf();
         Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is unloaded!");
         return true;

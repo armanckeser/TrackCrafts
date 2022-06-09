@@ -1,0 +1,10 @@
+{
+    "name": "TrackCrafts",
+    "version_number": "0.0.1",
+    "website_url": "https://github.com/armanckeser/TrackCrafts",
+    "description": "Adds the ability to pin a crafting recipe",
+    "dependencies": [
+        "BepInEx-BepInExPack_V_Rising-1.0.0",
+        "molenzwiebel-Wetstone-1.1.0"
+    ]
+}
