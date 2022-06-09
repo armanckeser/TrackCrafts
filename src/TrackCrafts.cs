@@ -1,12 +1,7 @@
 using HarmonyLib;
-using System.Collections;
-using ProjectM;
-using ProjectM.UI;
-using Unity.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace TrackCrafts;
 
@@ -33,7 +28,10 @@ public class TrackCrafts : MonoBehaviour
         if (eventData.button == PointerEventData.InputButton.Middle)
         {
             if (tooltip != null)
+            {
                 UnityEngine.Object.Destroy(tooltip);
+                tooltip = null;
+            }
             pinRecipe();
         }
     }
@@ -41,36 +39,19 @@ public class TrackCrafts : MonoBehaviour
     private static void pinRecipe()
     {
         GameObject currentTooltip = GameObject.Find("HUDCanvas(Clone)/Canvas/HUDMenuParent/WorkstationMenu(Clone)/MenuParent/WorkstationSubMenu(Clone)/MotionRoot/FakeTooltip");
-        // recipe = new PinnedRecipe();
-        // recipe.container = new GameObject("Recipe");
-        // setupRecipeContainer();
         createAndAttachFakeToolTip(currentTooltip);
     }
 
-    // private static void setupRecipeContainer()
-    // {
-    //     recipe.container.transform.parent = layout.transform;
-    //     recipe.container.transform.localPosition = new UnityEngine.Vector3(0, 0, 0);
-    //     recipe.container.transform.localScale = new UnityEngine.Vector3(1, 1, 1);
-    //     recipe.container.AddComponent<BoxCollider>();
-    //     // recipe.container.AddComponent<DestroyOnClick>();
-    // }
-
     private static void createAndAttachFakeToolTip(GameObject currentTooltip)
     {
-        Plugin.Logger.LogDebug($"In CreateandAttach");
         tooltip = Instantiate(currentTooltip, layout.transform);
         VerticalLayoutGroup layoutGroup = tooltip.GetComponent<VerticalLayoutGroup>();
         layoutGroup.childControlHeight = true;
-        tooltip.transform.localScale = new UnityEngine.Vector3(0.75f, .75f, .75f);
-        Plugin.Logger.LogDebug($"Setting position from {tooltip.transform.localPosition}");
-        tooltip.transform.localPosition = new UnityEngine.Vector3(365, tooltip.transform.localPosition.y, tooltip.transform.localPosition.z);
-        Plugin.Logger.LogDebug($"Setting position to {tooltip.transform.localPosition}");
         tooltip.transform.GetChild(2).gameObject.active = false;
         GameObject entries = tooltip.transform.FindChild("Entries").gameObject;
         deactivateExtraText(entries);
-        layoutGroup.OnTransformChildrenChanged();
         tooltip.active = true;
+        layoutGroup.OnTransformChildrenChanged();
     }
 
     private static void deactivateExtraText(GameObject entries)
@@ -83,24 +64,9 @@ public class TrackCrafts : MonoBehaviour
     public static void Reset()
     {
         if (tooltip != null)
+        {
             UnityEngine.Object.Destroy(tooltip);
-        tooltip = null;
+            tooltip = null;
+        }
     }
-    // class PinnedRecipe
-    // {
-    //     public GameObject container;
-
-    //     public void Destroy()
-    //     {
-    //         container = null;
-    //     }
-    // }
-
-    // class DestroyOnClick : MonoBehaviour
-    // {
-    //     private void OnMouseDown()
-    //     {
-    //         Destroy(gameObject);
-    //     }
-    // }
 }
