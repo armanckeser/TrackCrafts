@@ -1,7 +1,10 @@
 using HarmonyLib;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using ProjectM;
+using ProjectM.UI;
 using Wetstone.API;
 
 namespace TrackCrafts;
@@ -10,7 +13,7 @@ namespace TrackCrafts;
 public class TrackCrafts : MonoBehaviour
 {
     public static TrackCrafts Instance;
-    private static GameObject tooltip;
+    private static GameObject recipesParent;
     private static GameObject layout;
     private Keybinding ClearPinnedKeybind;
 
@@ -22,7 +25,7 @@ public class TrackCrafts : MonoBehaviour
         {
             Id = "TrackCrafts",
             Category = "Track Crafting Recipes",
-            Name = "Clear pinned recipe",
+            Name = "Clear pinned recipes",
             DefaultKeybinding = KeyCode.F1
         });
     }
@@ -31,8 +34,7 @@ public class TrackCrafts : MonoBehaviour
     {
         if (Input.GetKeyDown(ClearPinnedKeybind.Primary) || Input.GetKeyDown(ClearPinnedKeybind.Secondary))
         {
-            UnityEngine.Object.Destroy(tooltip);
-            tooltip = null;
+            destroyRecipes();
         }
     }
 
@@ -42,17 +44,37 @@ public class TrackCrafts : MonoBehaviour
     {
         if (layout == null)
             layout = GameObject.Find("HUDCanvas(Clone)/Canvas/HUDAchievements/JournalParent(Clone)/Layout");
+        if (recipesParent == null)
+        {
+            recipesParent = new GameObject("Recipes Parent");
+            recipesParent.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            recipesParent.transform.parent = layout.transform;
+            VerticalLayoutGroup recipesParentLayout = recipesParent.AddComponent<VerticalLayoutGroup>();
+            recipesParentLayout.childControlHeight = true;
+            recipesParentLayout.childControlWidth = true;
+            recipesParentLayout.spacing = 20;
+            recipesParent.AddComponent<ContentSizeFitter>();
+        }
         var entry = __instance.GetComponent<WorkstationRecipeGridSelectionEntry>();
         if (entry == null)
             return;
         if (eventData.button == PointerEventData.InputButton.Middle)
         {
-            if (tooltip != null)
+            if (recipesParent.transform.GetChildCount() < 3)
+                pinRecipe();
+        }
+    }
+
+    private static void destroyRecipes()
+    {
+        if (recipesParent != null)
+        {
+            foreach (Transform child in recipesParent.transform.GetAllChildren())
             {
-                UnityEngine.Object.Destroy(tooltip);
-                tooltip = null;
+                UnityEngine.Object.Destroy(child.gameObject);
             }
-            pinRecipe();
+            UnityEngine.Object.Destroy(recipesParent);
+            recipesParent = null;
         }
     }
 
@@ -61,21 +83,29 @@ public class TrackCrafts : MonoBehaviour
         GameObject currentTooltip = GameObject.Find("HUDCanvas(Clone)/Canvas/HUDMenuParent/WorkstationMenu(Clone)/MenuParent/WorkstationSubMenu(Clone)/MotionRoot/FakeTooltip");
         if (currentTooltip == null)
             return;
-        createAndAttachFakeToolTip(currentTooltip);
+        createAndAttachFakeToolTip(currentTooltip, recipesParent);
     }
 
-    private static void createAndAttachFakeToolTip(GameObject currentTooltip)
+    private static void createAndAttachFakeToolTip(GameObject currentTooltip, GameObject parent)
     {
-        tooltip = Instantiate(currentTooltip, layout.transform);
+        GameObject tooltip = Instantiate(currentTooltip, parent.transform);
         VerticalLayoutGroup layoutGroup = tooltip.GetComponent<VerticalLayoutGroup>();
         layoutGroup.childControlHeight = true;
         tooltip.transform.GetChild(2).gameObject.active = false;
         GameObject entries = tooltip.transform.FindChild("Entries").gameObject;
         deactivateExtraText(entries);
-        tooltip.active = true;
         layoutGroup.OnTransformChildrenChanged();
+        tooltip.AddComponent<GraphicRaycaster>();
+        GameObject sampleButton = GameObject.Find("HUDCanvas(Clone)/Canvas/HUDMenuParent/WorkstationMenu(Clone)/MenuParent/CharacterInventorySubMenu2(Clone)/MotionRoot/SharedForNowAtLeast/SortButton");
+        GameObject buttonParent = tooltip;
+        GameObject deleteButtonObject = Instantiate(sampleButton, buttonParent.transform);
+        deleteButtonObject.name = "Delete Button";
+        deleteButtonObject.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "X";
+        SimpleStunButton button = deleteButtonObject.GetComponent<ProjectM.UI.SimpleStunButton>();
+        var deleteOnClick = () => UnityEngine.Object.Destroy(tooltip);
+        button.onClick.AddListener(new Action(deleteOnClick));
+        tooltip.active = true;
     }
-
     private static void deactivateExtraText(GameObject entries)
     {
         entries.transform.FindChild("Stats").gameObject.active = false;
@@ -85,10 +115,6 @@ public class TrackCrafts : MonoBehaviour
 
     public static void Reset()
     {
-        if (tooltip != null)
-        {
-            UnityEngine.Object.Destroy(tooltip);
-            tooltip = null;
-        }
+        destroyRecipes();
     }
 }
