@@ -4,7 +4,7 @@
 ![Example](assets/example1.png)
 ### Description
 
-Middle Click on a recipe to track it. Press F1 to clear all.
+Middle Click on a recipe to track it. Press F1 to clear all. Press F2 to show/hide all.
 Note: Currently not auto updating
 
 ### Features
@@ -32,6 +32,8 @@ This is my first plugin, as well as my first time touching any game engine. If y
 - Size of the recipes is now smaller
 - Added a button to delete recipes individually
 - You can now set a keybind to show/hide the pinned recipes
+
+`0.0.5` Forgot to add readme to release
 
 ### Credits
 arwen - README
