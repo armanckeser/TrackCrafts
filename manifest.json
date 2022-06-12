@@ -1,6 +1,6 @@
 {
   "name": "TrackCrafts",
-  "version_number": "0.1.0",
+  "version_number": "0.0.4",
   "website_url": "https://github.com/armanckeser/TrackCrafts",
   "description": "Adds the ability to pin multiple crafting recipes",
   "dependencies": [

@@ -4,7 +4,7 @@
 
 ### Description
 
-Middle Click on a recipe to track it. Press F1 to clear it.
+Middle Click on a recipe to track it. Press F1 to clear all.
 Note: Currently not auto updating
 
 ### Features
@@ -27,6 +27,8 @@ This is my first plugin, as well as my first time touching any game engine. If y
 `0.0.2` Update Readme
 
 `0.0.3` Fix bug where middle clicking on non recipes would pin recipe
+
+`0.0.4` You can now track many recipes and delete them individually
 
 ### Credits
 arwen - README
