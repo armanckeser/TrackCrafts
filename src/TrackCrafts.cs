@@ -16,6 +16,7 @@ public class TrackCrafts : MonoBehaviour
     private static GameObject recipesParent;
     private static GameObject layout;
     private Keybinding ClearPinnedKeybind;
+    private Keybinding HidePinnedKeybind;
 
     private void Awake()
     {
@@ -23,10 +24,18 @@ public class TrackCrafts : MonoBehaviour
 
         ClearPinnedKeybind = KeybindManager.Register(new KeybindingDescription
         {
-            Id = "TrackCrafts",
+            Id = "TrackCraftsClear",
             Category = "Track Crafting Recipes",
             Name = "Clear pinned recipes",
             DefaultKeybinding = KeyCode.F1
+        });
+
+        HidePinnedKeybind = KeybindManager.Register(new KeybindingDescription
+        {
+            Id = "TrackCraftsHide",
+            Category = "Track Crafting Recipes",
+            Name = "Hide/Show pinned recipes",
+            DefaultKeybinding = KeyCode.F2
         });
     }
 
@@ -35,6 +44,11 @@ public class TrackCrafts : MonoBehaviour
         if (Input.GetKeyDown(ClearPinnedKeybind.Primary) || Input.GetKeyDown(ClearPinnedKeybind.Secondary))
         {
             destroyRecipes();
+        }
+
+        if (Input.GetKeyDown(HidePinnedKeybind.Primary) || Input.GetKeyDown(HidePinnedKeybind.Secondary))
+        {
+            hideRecipes();
         }
     }
 
@@ -65,6 +79,13 @@ public class TrackCrafts : MonoBehaviour
         }
     }
 
+    private static void hideRecipes()
+    {
+        if (recipesParent != null)
+        {
+            recipesParent.active = !recipesParent.active;
+        }
+    }
     private static void destroyRecipes()
     {
         if (recipesParent != null)
@@ -85,6 +106,7 @@ public class TrackCrafts : MonoBehaviour
             return;
         createAndAttachFakeToolTip(currentTooltip, recipesParent);
     }
+
 
     private static void createAndAttachFakeToolTip(GameObject currentTooltip, GameObject parent)
     {

@@ -1,7 +1,7 @@
 #### V Rising - Client Plugin
 
 # Track Crafts
-
+![Example](assets/example1.png)
 ### Description
 
 Middle Click on a recipe to track it. Press F1 to clear all.
@@ -29,6 +29,9 @@ This is my first plugin, as well as my first time touching any game engine. If y
 `0.0.3` Fix bug where middle clicking on non recipes would pin recipe
 
 `0.0.4` You can now track many recipes and delete them individually
+- Size of the recipes is now smaller
+- Added a button to delete recipes individually
+- You can now set a keybind to show/hide the pinned recipes
 
 ### Credits
 arwen - README
