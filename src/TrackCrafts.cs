@@ -172,14 +172,17 @@ public class TrackCrafts : MonoBehaviour
 
     private static void DeactivateExtraText(GameObject entries)
     {
+        //the moved the icon to the end, and there was garbled text where it used to be. Removes it.
         var levelIcon = FindTransform(entries.gameObject.transform.parent, "LevelFrame");
         if (levelIcon != null)
         {
             levelIcon.gameObject.SetActive(false);
         }
 
+        //instead of individually deactivating each item, loop them
         foreach (var o in entries.transform)
         {
+            //tryCast is unique to Il2CPP
             var child = o.TryCast<Transform>();
             if (child == null) continue;
             var childGameObject = child.gameObject;

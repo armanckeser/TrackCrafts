@@ -13,16 +13,14 @@ namespace TrackCrafts;
 [Bloodstone.API.Reloadable]
 public class Plugin : BasePlugin
 {
-    public static ManualLogSource Logger { get; private set; }
-    public static ConfigEntry<int> TrackQuantity { get; set; }
-    public static ConfigEntry<float> TrackerItemScale { get; set; }
+     public static ManualLogSource Logger { get; private set; }
+    public static ConfigEntry<int> TrackQuantity { get; private set; }
+    public static ConfigEntry<float> TrackerItemScale { get; private set; }
     private Harmony _harmony;
     public override void Load()
     {
-        
         TrackerItemScale = Config.Bind("General", "TrackerItemScale", 0.75f, new ConfigDescription("Scale of the tracker item", new AcceptableValueRange<float>(0.1f, 2f)));
         TrackQuantity = Config.Bind("General", "TrackQuantity", 3, "Number of items to track");
-        
         Logger = Log;
         _harmony = new Harmony(PluginInfo.PLUGIN_GUID);
         _harmony.PatchAll(Assembly.GetExecutingAssembly());
