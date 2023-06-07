@@ -1,43 +1,43 @@
 ﻿using System.Reflection;
 using BepInEx;
 using BepInEx.Configuration;
-using BepInEx.IL2CPP;
 using BepInEx.Logging;
-using UnhollowerRuntimeLib;
+using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using Il2CppInterop.Runtime.Injection;
 using Object = UnityEngine.Object;
-
-
 namespace TrackCrafts;
 
-[BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-[BepInDependency("xyz.molenzwiebel.wetstone")]
-[Wetstone.API.Reloadable]
+[BepInPlugin(PluginGuid, PluginName, PluginVersion)]
+[BepInDependency("gg.deca.Bloodstone")]
+[Bloodstone.API.Reloadable]
 public class Plugin : BasePlugin
 {
-    /// <summary>
-    ///     Most of the variables we need for the plugin.
-    /// </summary>
-    public static ManualLogSource Logger;
-
-    public static ConfigEntry<bool> Enabled;
+    private const string PluginGuid = "armanckeser.vrising.trackcrafts";
+    private const string PluginName = "TrackCrafts";
+    private const string PluginVersion = "0.0.6";
+     public static ManualLogSource Logger { get; private set; }
+    public static ConfigEntry<int> TrackQuantity { get; private set; }
+    public static ConfigEntry<float> TrackerItemScale { get; private set; }
     private Harmony _harmony;
     public override void Load()
     {
+        TrackerItemScale = Config.Bind("General", "TrackerItemScale", 0.75f, new ConfigDescription("Scale of the tracker item", new AcceptableValueRange<float>(0.1f, 2f)));
+        TrackQuantity = Config.Bind("General", "TrackQuantity", 3, "Number of items to track");
         Logger = Log;
-        _harmony = new Harmony(PluginInfo.PLUGIN_GUID);
+        _harmony = new Harmony(PluginGuid);
         _harmony.PatchAll(Assembly.GetExecutingAssembly());
-        Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+        Log.LogInfo($"Plugin {PluginGuid} is loaded!");
         ClassInjector.RegisterTypeInIl2Cpp<TrackCrafts>();
         AddComponent<TrackCrafts>();
     }
     public override bool Unload()
     {
-        Logger = Log;
-        TrackCrafts.Reset();
+        //Reset is a Unity even function, hence renaming to ResetAll
+        TrackCrafts.ResetAll();
         Object.Destroy(TrackCrafts.Instance);
         _harmony.UnpatchSelf();
-        Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is unloaded!");
+        Log.LogInfo($"Plugin {PluginGuid} is unloaded!");
         return true;
     }
 
